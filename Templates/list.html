@@ -6,7 +6,7 @@
 {% block content %}
 
       <h1 class="headline super-font">David Bowie lyrics analyzed for this project</h1>
-      <img class="image" src="style/images/ziggy.png" alt="all_songs">
+      
 
       
           
@@ -20,4 +20,11 @@
   <li><a href="{{ url_for('show', index=song.index) }}">{{ song.song_title }}</a></li>
   {% endfor %}
 </ul>
+<div class="col-md-4 ">
+  
+<a href=http://www.npwashere.com/bowie/songs>Back to list</a>
+<a href=http://www.npwashere.com/bowie>Back to Project</a>
+
+</div>
+
 {% endblock %}
