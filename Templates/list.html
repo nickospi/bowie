@@ -4,7 +4,15 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<p>This is a list of all the David Bowie songs ever published</p>
+
+      <h1 class="headline super-font">David Bowie lyrics analyzed for this project</h1>
+      <img class="image" src="style/images/ziggy.png" alt="all_songs">
+          
+  </div>
+</div>
+<br>
+<br>
+
 <ul>
   {% for song in songs %}
   <li><a href="{{ url_for('show', index=song.index) }}">{{ song.song_title }}</a></li>
