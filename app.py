@@ -19,7 +19,7 @@ class Bowie(db.Model):
 
 @app.route("/")
 def hello():
-  return "This is a cool website about bowie"
+  return "This is a cool sth about Bowie"
 
 
 
