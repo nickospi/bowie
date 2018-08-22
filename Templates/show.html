@@ -1,0 +1,22 @@
+
+
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+<div class="jumbotron">
+    <h3 class="display-7">{{song.year}}</h3>
+    
+  <h1 class="display-4">{{ song.song_title }}</h1>
+
+  <h3 class="display-7">Album: {{ song.album_title }}  </h3>
+
+
+<p class="lead"> {{ song.lyrics }}</p>
+<br>
+<p class="lead"> Written by: {{ song.writer_name }}</p>
+
+</div>
+
+{% endblock %}

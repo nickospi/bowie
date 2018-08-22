@@ -1,0 +1,13 @@
+
+
+
+{% extends 'layout.html' %}
+
+{% block content %}
+<p>This is a list of all the David Bowie songs ever published</p>
+<ul>
+  {% for song in songs %}
+  <li><a href="{{ url_for('show', index=song.index) }}">{{ song.song_title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
