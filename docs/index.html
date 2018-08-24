@@ -1,93 +1,464 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<html>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
       
-    <link rel="stylesheet" href="style/app.css">
-    
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700" rel="stylesheet"> 
-    
+    <style>
+body {
+  background: #333333;
+  text-align: center;
+  font-family: "Arial Rounded MT Bold";
+  color: white;
+  padding-top: 100px;
+}
+
+h1 {
+  font-size: 64px;
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+svg {
+  display: block;
+  margin: 0 auto;
+
+}
+
+circle {
+  fill: white;
+  stroke: white;
+}
+
+text {
+  fill: white;
+  font-size: 12px;
+}
+</style>
     <title>Bowie Lyrics Text Analysis</title>
-  </head>
-  <body>    
-  <body class="dark-theme">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 ">
-                
-              <p class="kicker super-font">A bit of stardust on text analysis</p>
-                <h1 class="headline super-font">All published Bowie lyrics analyzed</h1>
-                <p class="body-text sub-font">
-                    David Bowie is considered one of the most influential, long-lasting but also versatile contemporary music artists. With a career spanning almost six decades he managed to remain active, innovative and a leading, critically acclaimed artist by constantly reimagining himself and his music.
-                    This project aims to analyze all the officially published lyrics in Bowie's songbook and through text and sentiment analysis, to recognise patterns that could be correlated with the artist's personal timeline but also with major global events. 
-                </p>
-                <img class="image" src="style/images/db1.gif" alt="bowiegif" height=700>
-                    <p class="caption sub-font">Positivity, negativity, fear, sadness, anger, anticipation, surprise, all lie in Bowie's songs. How have these sentiments changed through the years?</p>
+</head>
+<body>
+    <body class="dark-theme">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 ">
+                    
+                  <p class="kicker super-font">A bit of stardust on text analysis</p>
+                    <h1 class="headline super-font">All published Bowie lyrics analyzed</h1>
+                    <p class="body-text sub-font">
+                        David Bowie is considered one of the most influential, long-lasting but also versatile contemporary music artists. With a career spanning almost six decades he managed to remain active, innovative and a leading, critically acclaimed artist by constantly reimagining himself and his music.
+                        This project aims to analyze all the officially published lyrics in Bowie's songbook and through text and sentiment analysis, to recognise patterns that could be correlated with the artist's personal timeline but also with major global events. 
+                    </p>
+                    <img class="image" src="style/images/db1.gif" alt="bowiegif" height=700>
+                        <p class="caption sub-font">Positivity, negativity, fear, sadness, anger, anticipation, surprise, all lie in Bowie's songs. How have these sentiments changed through the years?</p>
+                </div>
             </div>
-        </div>
-      
-        <div class="row justify-content-center">
-            <div class="col-lg-10 ">
-                <p class="subhead super-font">Lyrics ranging from 1964 to 2016</p>
-                <p class="body-text sub-font">
-                    <a href="http://www.npwashere.com/bowie/songs"> Here</a> is the list of songs used in this project. Dataset collected using LyricWikia, an online wiki-based lyrics database providing access via API and a python library, as well as APIseeds' lyrics API. Data on published songbook obtained by scraping Allmusic and Wikipedia.                  </p>
-                  </p>
+          
+            <div class="row justify-content-center">
+                <div class="col-lg-10 ">
+                    <p class="subhead super-font">Lyrics ranging from 1964 to 2016</p>
+                    <p class="body-text sub-font">
+                        <a href="http://www.npwashere.com/bowie/songs"> Here</a> is the list of songs used in this project. Dataset collected using LyricWikia, an online wiki-based lyrics database providing access via API and a python library, as well as APIseeds' lyrics API. Data on published songbook obtained by scraping Allmusic and Wikipedia.                  </p>
+                      </p>
+                </div>
             </div>
-        </div>
+        
+             </p>
+      </div>
+    </div>
     
-         </p>
-  </div>
-</div>
+    
+    
 
 
-<div id='chart'></div>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.2/d3.min.js'></script>
-<script src="chart.js"></script>	
-    </div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js"></script>
+<script type="text/javascript">
+ var decades = [   //decades cities //songs/populations
+          {
+            name: '60s',
+            songs: 48,
+            imgno: 1,
+            img:  "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_blackwidow.png"
+
+          },
+          {
+            name: '70s',
+            songs: 89,
+            imgno: 2
+
+          },
+          {
+            name: '80s',
+            songs: 39,
+            imgno:3
+          },
+          {
+            name: '90s',
+            songs: 62,
+            imgno:4
+          },
+          {
+            name: '00s',
+            songs: 25,
+            imgno:5
+          },
+          {
+            name: '10s',
+            songs: 32,
+            imgno:6
+          }
+        
+      ]  
+var height = 200,
+    width = 1000,
+    padding = 100;
+
+var svg = d3.select("body")
+  .append("svg")
+  .attr("height", height + padding * 2)
+  .attr("width", width + padding * 2)
+  .append("g")
+  .attr("transform", "translate(100 100)")
+ 
+var names = decades.map(function(d) { return d.name })
+var songNames = decades.map(function(d) { return +d.songs }),
+    minPop = d3.min(songNames),
+    maxPop = d3.max(songNames);
+
+var xPositionScaleName = d3.scalePoint().domain(names).range([0, width])
+var colorScale = d3.scaleLinear().domain([minPop, maxPop]).range(['#ffffff','#e7298a'])
+var colorScaleName = d3.scaleOrdinal().domain(names).range(['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854'])
+
+
+var defaultRadius = 20;
+var maxRadius = 100;
+var sizeScale = d3.scaleSqrt().domain([0, maxPop]).range([0, maxRadius])
+
+var xPositionScalesongs = d3.scaleLinear().domain([0, maxPop]).range([0, width])
 
 
 
-	
+var line = svg.append("line")
+  .attr("x1", 0)
+  .attr("x2", width)
+  .attr("y1", height / 2)
+  .attr("y2", height / 2)
+  .attr("stroke", "white")
+  .attr("opacity", 0)
 
-<br>
-<br>
+var groups = svg.selectAll("g")
+  .data(decades)
+  .enter().append("g")
+  .attr("transform", "translate(" + (width / 2) + " " + (height / 2) + ")")
 
-<nav class="navbar fixed-bottom navbar-dark bg-dark">
-    <a class="navbar-brand" href="http://www.npwashere.com">Nikos Pitsiladis: Coding Projects</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="http://www.npwashere.com">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Projects
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/Earthquakes">Earthquakes in Greece</a>
-            <a class="dropdown-item" href="/Lego">LEGO Prices</a>
-            <a class="dropdown-item" href="/Lobbying">Lobbying in the EU</a>
-            <a class="dropdown-item" href="/bowie">Bowie Text Analysis</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://github.com/nickospi">About</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://github.com/nickospi/data_studio/tree/master/code">Code</a>
-        </li>
-      </ul>
-     
-    </div>
-  </nav>
-     
+var text = groups.append("text")
+  .text(function(d) {
+    return d.name
+  })
+  .attr("text-anchor", "middle")
+  .attr("opacity", 0)
+  .attr("dy", defaultRadius + 20)
 
+var circles = groups.append("circle")
+  .attr("r", defaultRadius)
+
+var steps = [
+  step0,
+  step1,
+  step2,
+  step3
+// step4,
+  //step5,
+  //step6
+]
+
+var currentStep = 0
+
+d3.select("body").on("keyup", function() {
+  console.log(d3.event.code)
+  if(d3.event.code === "Space" || d3.event.code === "ArrowRight") {
+    currentStep = (currentStep + 1) % 4
+    steps[currentStep].apply()
+  }
+  if(d3.event.code === "ArrowLeft") {
+    currentStep = currentStep < 1 ? 4 : currentStep - 1
+    steps[currentStep].apply()
+  }
+})
+
+function makeTranslate(x, y) {
+  return "translate(" + x + " " + y + ")"
+}
+
+function step0() {
+  line.transition().attr("opacity", 0)
+
+  groups.transition()
+    .duration(1000)
+    .attr("transform", makeTranslate(width / 2, height / 2))
+
+  circles.transition()
+    .duration(1000)
+    .attr("r", defaultRadius)
+    .style("fill-opacity", 1)
+    .style("fill", '#ffffff')
+    .style("stroke-width", 0)
+
+  text.transition()
+    .duration(1000)
+    .attr("opacity", 0)
+}
+
+function step1() {
+  line.transition().attr("opacity", 2)
+
+  groups.transition()
+    .duration(1000)
+    .attr("transform", function(d) {
+      return makeTranslate(xPositionScaleName(d.name), height / 2)
+    })
+
+  circles.transition()
+    .duration(1000)
+    .attr("r", defaultRadius)
+    .style("fill-opacity", 1)
+    .style("fill", '#ffffff')
+    .style("stroke-width", 0)
+
+  text.transition()
+    .duration(1000)
+    .attr("text-anchor", "middle")
+    .attr("opacity", 1)
+    .attr("dx", 0)
+    .attr("dy", defaultRadius + 20)
+}
+
+function step2() {
+  line.transition().attr("opacity", 2)
+
+groups.transition()
+  .duration(1000)
+  .attr("transform", function(d) {
+    return makeTranslate(xPositionScaleName(d.name), height / 2)
+  })
+
+circles.transition()
+  .duration(1000)
+  .attr("r", defaultRadius)
+  .style("fill-opacity", 1)
+  .style("fill", '#ffffff')
+  .style("stroke-width", 0)
+
+text.transition()
+  .duration(1000)
+  .attr("text-anchor", "middle")
+  .attr("opacity", 1)
+  .attr("dx", 0)
+  .attr("dy", defaultRadius + 20)
+
+
+
+
+var imgsix = svg.append("svg:image")
+.attr("xlink:href", "style/images/sixties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x',  width/4-200)
+var imgseven = svg.append("svg:image")
+.attr("xlink:href", "style/images/seventies.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4)
+
+var imgeight = svg.append("svg:image")
+.attr("xlink:href", "style/images/eighties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+200)
+
+var imgnine = svg.append("svg:image")
+.attr("xlink:href", "style/images/nineties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+400)
+
+var imgten = svg.append("svg:image")
+.attr("xlink:href", "style/images/zeroes.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+600)
+
+
+  
+
+
+
+}
+
+function step3() {
+  line.transition().attr("opacity", 2)
+
+  groups.transition()
+    .duration(1000)
+    .attr("transform", function(d) {
+      return makeTranslate(xPositionScaleName(d.name), height / 2)
+    })
+
+  circles.transition()
+    .duration(1000)
+    .attr("r", function(d) {
+      return sizeScale(d.songs)
+    })
+    .style("fill-opacity", 1)
+    .style("fill", '#ffffff')
+    .style("stroke-width", 0)
+
+  text.transition()
+    .duration(1000)
+    .attr("opacity", 1)
+    .attr("dy", function(d) {
+      return sizeScale(d.songs) + 20
+    })
+    .attr("dx", 0)
+    .attr("text-anchor", "middle")
+
+var imgnine = svg.append("svg:image")
+.attr("xlink:href", "style/images/nineties.png")
+.attr("width", "0")
+.attr("height", "0")
+.attr('x', width/4+400)
+
+imgnine.transition()
+.duration(1000)
+    .attr("visibility", "hidden")
+
+
+}
+
+
+
+
+
+
+  
+// function step4() {
+//   line.transition().attr("opacity", 0)
+
+//   groups.transition()
+//     .duration(1000)
+//     .attr("transform", function(d) {
+//       var y = height - sizeScale(d.songs) - maxRadius
+//       return makeTranslate(width / 2, y)
+//     })
+
+//   circles.transition()
+//     .duration(1000)
+//     .attr("r", function(d) {
+//       return sizeScale(d.songs)
+//     })
+//     .style("fill-opacity", 0)
+//     .style("fill", '#ffffff')
+//     .style("stroke-width", 1)
+
+//   text.transition()
+//     .duration(1000)
+//     .attr("opacity", 1)
+//     .attr("dy", 0)
+//     .attr("text-anchor", "right")
+//     .attr("dx", function(d) {
+//       return sizeScale(d.songs) + 5
+//     })
+// } --> -->
+
+// function step4() {
+//   line.transition().attr("opacity", 1)
+
+//   groups.transition()
+//     .duration(1000)
+//     .attr("transform", function(d) {
+//       return makeTranslate(xPositionScalesongs(d.songs), height / 2)
+//     })
+
+//   circles.transition()
+//     .duration(1000)
+//     .attr("r", defaultRadius / 2)
+//     .style("fill-opacity", 1)
+//     .style("fill", '#ffffff')
+//     .style("stroke-width", 0)
+
+//   text.transition()
+//     .duration(1000)
+//     .attr("opacity", 1)
+//     .attr("dy", defaultRadius / 2 + 20)
+//     .attr("text-anchor", "middle")
+//     .attr("dx", 0)
+
+// }
+
+// function step6() {
+//   line.transition().attr("opacity", 1)
+
+//   groups.transition()
+//     .duration(1000)
+//     .attr("transform", function(d) {
+//       return makeTranslate(xPositionScalesongs(d.songs), height / 2)
+//     })
+
+//   circles.transition()
+//     .duration(1000)
+//     .attr("r", defaultRadius / 2)
+//     .style("fill-opacity", 1)
+//     .style("fill", function(d) {
+//       return colorScaleName(d.name)
+//     })
+//     .style("stroke-width", 0)
+
+//   text.transition()
+//     .duration(1000)
+//     .attr("opacity", 1)
+//     .attr("dy", defaultRadius / 2 + 20)
+//     .attr("text-anchor", "middle")
+//     .attr("dx", 0)
+
+// }
+
+</script>
+    <br>
+    <br>
+    
+    <nav class="navbar fixed-bottom navbar-dark bg-dark">
+        <a class="navbar-brand" href="http://www.npwashere.com">Nikos Pitsiladis: Coding Projects</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="http://www.npwashere.com">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Projects
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/Earthquakes">Earthquakes in Greece</a>
+                <a class="dropdown-item" href="/Lego">LEGO Prices</a>
+                <a class="dropdown-item" href="/Lobbying">Lobbying in the EU</a>
+                <a class="dropdown-item" href="/bowie">Bowie Text Analysis</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/nickospi">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/nickospi/data_studio/tree/master/code">Code</a>
+            </li>
+          </ul>
+         
+        </div>
+      </nav>
+         
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

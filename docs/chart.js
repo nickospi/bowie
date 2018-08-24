@@ -37,26 +37,13 @@ width = 1000,
 padding = 100;
 
 
-var svg = d3.select("chart")
+var svg = d3.select("viz")
   .append("svg")
   .attr("height", height + padding * 2)
   .attr("width", width + padding * 2)
   .append("g")
   .attr("transform", "translate(100 100)")
 
-var names = decades.map(function(d) { return d.name })
-var songsNumber = decades.map(function(d) { return +d.songs }),
-    minPop = d3.min(songsNumber),
-    maxPop = d3.max(songsNumber)
-    var xPositionScaleName = d3.scalePoint().domain(names).range([0, width])
-    var colorScale = d3.scaleLinear().domain([minPop, maxPop]).range(['#ffffff','#e7298a'])
-    var colorScaleName = d3.scaleOrdinal().domain(names).range(['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854'])
-    
-    var defaultRadius = 20;
-    var maxRadius = 100;
-    var sizeScale = d3.scaleSqrt().domain([0, maxPop]).range([0, maxRadius])
-    
-    var xPositionScalePopulation = d3.scaleLinear().domain([0, maxPop]).range([0, width])
     
     var line = svg.append("line")
       .attr("x1", 0)
