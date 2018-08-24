@@ -33,7 +33,7 @@ circle {
 
 text {
   fill: white;
-  font-size: 12px;
+  font-size: 14px;
 }
 </style>
     <title>Bowie Lyrics Text Analysis</title>
@@ -126,6 +126,8 @@ var songNames = decades.map(function(d) { return +d.songs }),
     minPop = d3.min(songNames),
     maxPop = d3.max(songNames);
 
+var maxSongs = 295
+
 var xPositionScaleName = d3.scalePoint().domain(names).range([0, width])
 var colorScale = d3.scaleLinear().domain([minPop, maxPop]).range(['#ffffff','#e7298a'])
 var colorScaleName = d3.scaleOrdinal().domain(names).range(['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854'])
@@ -160,6 +162,19 @@ var text = groups.append("text")
   .attr("opacity", 0)
   .attr("dy", defaultRadius + 20)
 
+
+
+var textZero = groups.append("text")
+  .text(function(d) {
+    return maxSongs+ " song lyrics written by Bowie and dating from the 60's up to 2015 have been analyzed."
+  })
+  .attr("text-anchor", "middle")
+  .attr("opacity", 1)
+  .attr("dy", defaultRadius + 20)
+
+
+    
+
 var circles = groups.append("circle")
   .attr("r", defaultRadius)
 
@@ -172,6 +187,44 @@ var steps = [
   //step5,
   //step6
 ]
+
+var imgsix = svg.append("svg:image")
+.attr("xlink:href", "style/images/sixties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x',  width/4-200)
+.attr("visibility","hidden")
+
+var imgseven = svg.append("svg:image")
+.attr("xlink:href", "style/images/seventies.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4)
+.attr("visibility","hidden")
+
+var imgeight = svg.append("svg:image")
+.attr("xlink:href", "style/images/eighties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+200)
+.attr("visibility","hidden")
+
+var imgnine = svg.append("svg:image")
+.attr("xlink:href", "style/images/nineties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+400)
+.attr("visibility","hidden")
+
+
+var imgten = svg.append("svg:image")
+.attr("xlink:href", "style/images/zeroes.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+600)
+.attr("visibility","hidden")
+
+
 
 var currentStep = 0
 
@@ -204,14 +257,39 @@ function step0() {
     .style("fill-opacity", 1)
     .style("fill", '#ffffff')
     .style("stroke-width", 0)
+    .attr("pulsate", 1)
+
 
   text.transition()
     .duration(1000)
     .attr("opacity", 0)
+
+  textZero.transition()
+    .duration(500)
+    .attr("text-anchor", "middle")
+    .attr("opacity", 1)
+    .attr("dx", 0)
+    .attr("dy", defaultRadius + 20)
+
+
+
+
+
 }
 
 function step1() {
   line.transition().attr("opacity", 2)
+
+
+textZero.transition()
+    .duration(250)
+    .attr("text-anchor", "middle")
+    .attr("opacity", 0)
+    .attr("dx", 0)
+    .attr("dy", defaultRadius + 20)
+   
+
+
 
   groups.transition()
     .duration(1000)
@@ -232,6 +310,21 @@ function step1() {
     .attr("opacity", 1)
     .attr("dx", 0)
     .attr("dy", defaultRadius + 20)
+
+
+imgsix
+.attr("visibility","show")
+imgseven
+.attr("visibility","show")
+imgeight
+.attr("visibility","show")
+imgnine
+.attr("visibility","show")
+imgten
+.attr("visibility","show")
+
+
+
 }
 
 function step2() {
@@ -259,38 +352,16 @@ text.transition()
 
 
 
-
-var imgsix = svg.append("svg:image")
-.attr("xlink:href", "style/images/sixties.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x',  width/4-200)
-var imgseven = svg.append("svg:image")
-.attr("xlink:href", "style/images/seventies.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x', width/4)
-
-var imgeight = svg.append("svg:image")
-.attr("xlink:href", "style/images/eighties.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x', width/4+200)
-
-var imgnine = svg.append("svg:image")
-.attr("xlink:href", "style/images/nineties.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x', width/4+400)
-
-var imgten = svg.append("svg:image")
-.attr("xlink:href", "style/images/zeroes.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x', width/4+600)
-
-
-  
+imgsix
+.attr("visibility","hidden")
+imgseven
+.attr("visibility","hidden")
+imgeight
+.attr("visibility","hidden")
+imgnine
+.attr("visibility","hidden")
+imgten
+.attr("visibility","hidden")
 
 
 
@@ -323,15 +394,6 @@ function step3() {
     .attr("dx", 0)
     .attr("text-anchor", "middle")
 
-var imgnine = svg.append("svg:image")
-.attr("xlink:href", "style/images/nineties.png")
-.attr("width", "0")
-.attr("height", "0")
-.attr('x', width/4+400)
-
-imgnine.transition()
-.duration(1000)
-    .attr("visibility", "hidden")
 
 
 }
