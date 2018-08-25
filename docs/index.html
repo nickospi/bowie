@@ -54,7 +54,7 @@
     
     <div class="row justify-content-center">
       <div class="col-lg-10 ">
-          <p class="body-text sub-font"> [Use space bar and arrow keys to navigate] </p>
+          <p class="body-text sub-font"> [Use space bar and arrow keys to navigate through the below visualiation] </p>
       </div>
   </div>
 
@@ -166,7 +166,7 @@ var labeltext = groups.append("text")
 
 var textZero = groups.append("text")
   .text(function(d) {
-    return maxSongs+ " song lyrics written by Bowie and dating from the 60's up to 2015 have been analyzed."
+    return maxSongs+ " song lyrics written by Bowie and dating from the 60's up to 2015 have been analyzed.[Hit Space]"
   })
   .attr("text-anchor", "middle")
   .attr("opacity", 1)
@@ -254,7 +254,7 @@ function step0() {
 
   circles.transition()
     .duration(1000)
-    .attr("r", defaultRadius)
+    .attr("r",maxSongs/2)
     .style("fill-opacity", 1)
     .style("fill", '#ffffff')
     .style("stroke-width", 0)
