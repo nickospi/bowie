@@ -3,6 +3,7 @@
 body {
     padding-top:60px;
     margin: auto;
+    text-align: center;
 }
 
 
@@ -15,10 +16,31 @@ body {
     color: black;    
 }
 
+.svg {
+    display: block;
+    margin: 0 auto;
+  
+  }
+  
+.circle {
+    fill: white;
+    stroke: white;
+  }
+  
 .container {
         max-width: 975px;
 }
+text {
+    fill: #fcfbfb;
+    font-size: 14px;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
 
+  textZero {
+    fill: #fcfbfb;
+    font-size: 18px;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
 /* ******** */
 
 .image {
@@ -99,6 +121,12 @@ sub-font
     margin-bottom: 0.5rem;
     margin-top: 1.5rem;
     font-weight: 700;
+}
+.text {
+    font-size: 1.25rem;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
 }
 
 .label {

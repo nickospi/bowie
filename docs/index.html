@@ -4,38 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-      
-    <style>
-body {
-  background: #333333;
-  text-align: center;
-  font-family: "Arial Rounded MT Bold";
-  color: white;
-  padding-top: 100px;
-}
+            
+    <link rel="stylesheet" href="style/app.css">
+    
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700" rel="stylesheet"> 
 
-h1 {
-  font-size: 64px;
-  margin-top: 30px;
-  margin-bottom: 0;
-}
-
-svg {
-  display: block;
-  margin: 0 auto;
-
-}
-
-circle {
-  fill: white;
-  stroke: white;
-}
-
-text {
-  fill: white;
-  font-size: 14px;
-}
-</style>
     <title>Bowie Lyrics Text Analysis</title>
 </head>
 <body>
@@ -68,12 +42,13 @@ text {
       </div>
     </div>
     
-    
-    
-
-
+            
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js"></script>
 <script type="text/javascript">
+
+    
+
+
  var decades = [   //decades cities //songs/populations
           {
             name: '60s',
@@ -171,12 +146,13 @@ var textZero = groups.append("text")
   .attr("text-anchor", "middle")
   .attr("opacity", 1)
   .attr("dy", defaultRadius + 20)
-
-
-    
-
+  
+  
+  
 var circles = groups.append("circle")
   .attr("r", defaultRadius)
+  .attr("fill", 'white')
+  
 
 var steps = [
   step0,
@@ -257,7 +233,6 @@ function step0() {
     .style("fill-opacity", 1)
     .style("fill", '#ffffff')
     .style("stroke-width", 0)
-    .attr("pulsate", 1)
 
 
   text.transition()
@@ -270,7 +245,7 @@ function step0() {
     .attr("opacity", 1)
     .attr("dx", 0)
     .attr("dy", defaultRadius + 20)
-
+    
 
 
 
@@ -485,7 +460,10 @@ function step3() {
 
 // }
 
+
 </script>
+
+
     <br>
     <br>
     
