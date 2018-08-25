@@ -262,6 +262,14 @@ function step0() {
     .attr("dy", defaultRadius + 20)
     
 
+labeltext.transition()
+.duration(1000)
+    .attr("opacity", 0)
+    .attr("dy", function(d) {
+      return sizeScale(d.songs) + 20
+    })
+    .attr("dx", 0)
+    .attr("text-anchor", "middle")
 
 
 
