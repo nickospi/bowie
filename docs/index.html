@@ -43,36 +43,22 @@
                 <div class="col-lg-10 ">
                     <p class="subhead super-font">Lyrics ranging from 1964 to 2015</p>
                     <p class="body-text sub-font">
-                      Use space bar and arrow keys to navigate through the below visualization. Dataset collected using LyricWikia, an online wiki-based lyrics database providing access via API and a python library, as well as APIseeds' lyrics API. Data on published songbook obtained by scraping Allmusic and Wikipedia.<a href="http://www.npwashere.com/bowie/songs"> Here</a> you can find all song lyrics used in this project. 
+                      Use space bar to navigate through the below visualization. Dataset collected using LyricWikia, an online wiki-based lyrics database providing access via API and a python library, as well as APIseeds' lyrics API. Data on published songbook obtained by scraping Allmusic and Wikipedia.<a href="http://www.npwashere.com/bowie/songs"> Here</a> you can find all song lyrics used in this project. 
                                         </p>
                       </p>
                 </div>
             </div>
-        
-             </p>
-      </div>
-    </div>
-    
-   </p>
-
-
-</div>
-</div>
+          </div>
+        </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js"></script>
 <script type="text/javascript">
 
-  
-
-   
-
-
- var decades = [   //decades cities //songs/populations
+ var decades = [   
           {
             name: '60s',
             songs: 48,
             imgno: 1,
-            img:  "http://marvel-force-chart.surge.sh/marvel_force_chart_img/top_blackwidow.png"
 
           },
           {
@@ -100,6 +86,352 @@
             name: '10s',
             songs: 32,
             imgno:6
+          }
+        
+      ]  
+var height = 200,
+    width = 1000,
+    padding = 100;
+
+var svg = d3.select("body")
+  .append("svg")
+  .attr("height", height + padding * 2)
+  .attr("width", width + padding * 2)
+  .append("g")
+  .attr("transform", "translate(100 100)")
+  
+var names = decades.map(function(d) { return d.name })
+var songNames = decades.map(function(d) { return +d.songs }),
+    minPop = d3.min(songNames),
+    maxPop = d3.max(songNames);
+
+var maxSongs = 295
+
+var xPositionScaleName = d3.scalePoint().domain(names).range([0, width])
+var defaultRadius = 20;
+var maxRadius = 100;
+var sizeScale = d3.scaleSqrt().domain([0, maxPop]).range([0, maxRadius])
+
+var xPositionScalesongs = d3.scaleLinear().domain([0, maxPop]).range([0, width])
+
+var line = svg.append("line")
+  .attr("x1", 0)
+  .attr("x2", width)
+  .attr("y1", height / 2)
+  .attr("y2", height / 2)
+  .attr("stroke", "white")
+  .attr("opacity", 0)
+
+var groups = svg.selectAll("g")
+  .data(decades)
+  .enter().append("g")
+  .attr("transform", "translate(" + (width / 2) + " " + (height / 2) + ")")
+
+var text = groups.append("text")
+  .text(function(d) {
+    return d.name
+  })
+  .attr("text-anchor", "middle")
+  .attr("opacity", 0)
+  .attr("dy", defaultRadius + 40)
+
+var labeltext = groups.append("text")
+  .text(function(d) {
+    return d.songs+" song lyrics"
+  })
+  .attr("text-anchor", "middle")
+  .attr("opacity", 0)
+  .attr("dy", defaultRadius + 40)
+
+
+
+var textZero = groups.append("text")
+  .text(function(d) {
+    return maxSongs+ " song lyrics written by Bowie and dating from the 60's up to 2015 have been analyzed.[Hit Space]"
+  })
+  .attr("text-anchor", "middle")
+  .attr("opacity", 1)
+  .attr("dy", defaultRadius*3 + 40)
+
+var circles = groups.append("circle")
+  .attr("r", defaultRadius*3)
+  .attr("fill", 'white')
+  .style("fill-opacity", 0)
+
+function circleTransition() { 
+
+var plsCircles = groups.append("circle")
+  .attr("r", defaultRadius*2)
+  .attr("fill", 'white')
+
+  repeat();
+
+function repeat() {
+  plsCircles
+    .transition()        
+    .duration(500)      
+    .attr("r", defaultRadius*2)
+    .attr("fill","white")
+    .transition()       
+    .duration(500)      
+    .attr("r", defaultRadius)
+    .attr("fill","white")
+    .on("end", repeat);  
+};
+
+};
+
+circleTransition();
+ 
+var steps = [
+  step0,
+  step1,
+  step2
+ 
+]
+
+var imgsix = svg.append("svg:image")
+.attr("xlink:href", "style/images/sixties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x',  width/4-200)
+.attr("visibility","hidden")
+
+var imgseven = svg.append("svg:image")
+.attr("xlink:href", "style/images/seventies.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4)
+.attr("visibility","hidden")
+
+var imgeight = svg.append("svg:image")
+.attr("xlink:href", "style/images/eighties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+200)
+.attr("visibility","hidden")
+
+var imgnine = svg.append("svg:image")
+.attr("xlink:href", "style/images/nineties.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+400)
+.attr("visibility","hidden")
+
+var imgten = svg.append("svg:image")
+.attr("xlink:href", "style/images/zeroes.png")
+.attr("width", "80")
+.attr("height", "80")
+.attr('x', width/4+600)
+.attr("visibility","hidden")
+
+var currentStep = 0
+
+d3.select("body").on("keyup", function() {
+  console.log(d3.event.code)
+  if(d3.event.code === "Space") {
+    currentStep = (currentStep + 1) 
+    steps[currentStep].apply()
+  }
+})
+
+function makeTranslate(x, y) {
+  return "translate(" + x + " " + y + ")"
+}
+
+function step0() {
+  line.transition().attr("opacity", 0)
+
+  groups.transition()
+    .duration(1000)
+    .attr("transform", makeTranslate(width / 2, height / 2))
+   
+  circles.transition()
+    .duration(1000)
+    .attr("r",defaultRadius*3)
+    .style("fill-opacity", 1)
+    .style("fill", '#ffffff')
+    .style("stroke-width", 0)
+    
+  text.transition()
+    .duration(1000)
+    .attr("opacity", 0)
+
+  textZero.transition()
+    .duration(500)
+    .attr("text-anchor", "middle")
+    .attr("opacity", 1)
+    .attr("dx", 0)
+    .attr("dy", defaultRadius*3 + 40)  
+
+labeltext.transition()
+.duration(1000)
+    .attr("opacity", 0)
+    .attr("dy", function(d) {
+      return sizeScale(d.songs) + 40
+    })
+    .attr("dx", 0)
+    .attr("text-anchor", "middle")
+
+}
+textSpace.transition()
+.duration(1000)
+    .attr("opacity", 0)
+    .attr("dy", function(d) {
+      return sizeScale(d.songs) + 60
+    })
+    .attr("dx", 0)
+    .attr("text-anchor", "middle")
+    
+
+function step1() {
+  line.transition().attr("opacity", 2)
+
+textZero.transition()
+    .duration(250)
+    .attr("text-anchor", "middle")
+    .attr("opacity", 0)
+    .attr("dx", 0)
+    .attr("dy", defaultRadius*3 + 40)
+   
+  groups.transition()
+    .duration(1000)
+    .attr("transform", function(d) {
+      return makeTranslate(xPositionScaleName(d.name), height / 2)
+    })
+
+  circles.transition()
+    .duration(1000)
+    .attr("r", defaultRadius*2)
+    .style("fill-opacity", 1)
+    .style("fill", '#ffffff')
+    .style("stroke-width", 0)
+  
+  text.transition()
+    .duration(1000)
+    .attr("text-anchor", "middle")
+    .attr("opacity", 1)
+    .attr("dx", 0)
+    .attr("dy", defaultRadius*2 + 40)
+
+
+    
+
+imgsix
+.attr("visibility","show")
+imgseven
+.attr("visibility","show")
+imgeight
+.attr("visibility","show")
+imgnine
+.attr("visibility","show")
+imgten
+.attr("visibility","show")
+
+
+
+}
+
+
+function step2() {
+  line.transition().attr("opacity", 2)
+
+  groups.transition()
+    .duration(1000)
+    .attr("transform", function(d) {
+      return makeTranslate(xPositionScaleName(d.name), height / 2)
+    })
+
+  circles.transition()
+    .duration(1000)
+    .attr("r", function(d) {
+      return sizeScale(d.songs)
+    })
+    .style("fill-opacity", 1)
+    .style("fill", '#ffffff')
+    .style("stroke-width", 0)
+
+  text.transition()
+    .duration(1000)
+    .attr("opacity", 0)
+    .attr("dy", function(d) {
+      return sizeScale(d.songs) + 40
+    })
+    .attr("dx", 0)
+    .attr("text-anchor", "middle")
+
+
+labeltext.transition()
+.duration(1000)
+    .attr("opacity", 1)
+    .attr("dy", function(d) {
+      return sizeScale(d.songs) + 40
+    })
+    .attr("dx", 0)
+    .attr("text-anchor", "middle")
+  
+    
+    
+
+imgsix
+.attr("visibility","hidden")
+imgseven
+.attr("visibility","hidden")
+imgeight
+.attr("visibility","hidden")
+imgnine
+.attr("visibility","hidden")
+imgten
+.attr("visibility","hidden")
+
+}
+
+
+</script>
+ 
+
+ <div class="row justify-content-center"> 
+  <div class="col-md-10">
+    <p class="subhead super-font">Text mining: applying TFIDF and more </p>
+    <p class="body-text sub-font">Trying to correlate lyrics to the zeitgeist of each decade but also in Bowie's own personal life events, we use TFIDF. Tf–idf or TFIDF, short for term frequency–inverse document frequency, is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus, in this case the whole lyrics database, divided by decades. The tf–idf value increases proportionally to the number of times a word appears in the document and is offset by the number of documents in the corpus that contain the word, which helps to adjust for the fact that some words appear more frequently in general. Tf–idf is one of the most popular term-weighting schemes today as 83% of text-based recommender systems in digital libraries use it.       
+       </p>
+       <p class="body-text sub-font">Hover your mouse over the circles representing each decade to find out the top 20 terms after the analysis.       
+      </p>
+  </div>
+</div>
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js"></script>
+<script type="text/javascript">
+
+  
+ var decades = [   
+          {
+            name: '60s',
+            songs: 48,
+
+          },
+          {
+            name: '70s',
+            songs: 89,
+
+          },
+          {
+            name: '80s',
+            songs: 39,
+          },
+          {
+            name: '90s',
+            songs: 62,
+          },
+          {
+            name: '00s',
+            songs: 25,
+          },
+          {
+            name: '10s',
+            songs: 32,
           }
         
       ]  
@@ -148,9 +480,6 @@ var line = svg.append("line")
   .attr("opacity", 0)
 
 
-
-
-
 var groups = svg.selectAll("g")
   .data(decades)
   .enter().append("g")
@@ -185,11 +514,6 @@ var textZero = groups.append("text")
   .attr("dy", defaultRadius*3 + 40)
 
 
-
-
-
-
-
 var circles = groups.append("circle")
   .attr("r", defaultRadius*3)
   .attr("fill", 'white')
@@ -200,248 +524,240 @@ var circles = groups.append("circle")
 function circleTransition() { 
 
 
-var plsCircles = groups.append("circle")
-  .attr("r", defaultRadius*2)
-  .attr("fill", 'white')
+// var plsCircles = groups.append("circle")
+//   .attr("r", defaultRadius*2)
+//   .attr("fill", 'white')
 
-  repeat();
+//   repeat();
 
-function repeat() {
-  plsCircles
-    .transition()        
-    .duration(500)      
-    .attr("r", defaultRadius*2)
-    .attr("fill","white")
+// function repeat() {
+//   plsCircles
+//     .transition()        
+//     .duration(500)      
+//     .attr("r", defaultRadius*2)
+//     .attr("fill","white")
 
 
-    .transition()       
-    .duration(500)      
-    .attr("r", defaultRadius)
-    .attr("fill","white")
-    .on("end", repeat);  
-};
+//     .transition()       
+//     .duration(500)      
+//     .attr("r", defaultRadius)
+//     .attr("fill","white")
+//     .on("end", repeat);  
+// };
 
-};
+// };
 
-circleTransition();
+// circleTransition();
 
 
   
-var steps = [
-  step0,
-  step1,
-  step2
+// var steps = [
+//   step0,
+//   step1,
+//   step2
  // step3
 // step4,
   //step5,
   //step6
 ]
 
+// <!-- 
+// var imgsix = svg.append("svg:image")
+// .attr("xlink:href", "style/images/sixties.png")
+// .attr("width", "80")
+// .attr("height", "80")
+// .attr('x',  width/4-200)
+// .attr("visibility","hidden")
 
-var imgsix = svg.append("svg:image")
-.attr("xlink:href", "style/images/sixties.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x',  width/4-200)
-.attr("visibility","hidden")
+// var imgseven = svg.append("svg:image")
+// .attr("xlink:href", "style/images/seventies.png")
+// .attr("width", "80")
+// .attr("height", "80")
+// .attr('x', width/4)
+// .attr("visibility","hidden")
 
-var imgseven = svg.append("svg:image")
-.attr("xlink:href", "style/images/seventies.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x', width/4)
-.attr("visibility","hidden")
+// var imgeight = svg.append("svg:image")
+// .attr("xlink:href", "style/images/eighties.png")
+// .attr("width", "80")
+// .attr("height", "80")
+// .attr('x', width/4+200)
+// .attr("visibility","hidden")
 
-var imgeight = svg.append("svg:image")
-.attr("xlink:href", "style/images/eighties.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x', width/4+200)
-.attr("visibility","hidden")
-
-var imgnine = svg.append("svg:image")
-.attr("xlink:href", "style/images/nineties.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x', width/4+400)
-.attr("visibility","hidden")
-
-
-var imgten = svg.append("svg:image")
-.attr("xlink:href", "style/images/zeroes.png")
-.attr("width", "80")
-.attr("height", "80")
-.attr('x', width/4+600)
-.attr("visibility","hidden")
+// var imgnine = svg.append("svg:image")
+// .attr("xlink:href", "style/images/nineties.png")
+// .attr("width", "80")
+// .attr("height", "80")
+// .attr('x', width/4+400)
+// .attr("visibility","hidden")
 
 
-var currentStep = 0
-
-d3.select("body").on("keyup", function() {
-  console.log(d3.event.code)
-  if(d3.event.code === "Space" || d3.event.code === "ArrowRight") {
-    currentStep = (currentStep + 1) % 3
-    steps[currentStep].apply()
-  }
-  if(d3.event.code === "ArrowLeft") {
-    currentStep = currentStep < 1 ? 3 : currentStep - 1
-    steps[currentStep].apply()
-  }
-})
-
-function makeTranslate(x, y) {
-  return "translate(" + x + " " + y + ")"
-}
+// var imgten = svg.append("svg:image")
+// .attr("xlink:href", "style/images/zeroes.png")
+// .attr("width", "80")
+// .attr("height", "80")
+// .attr('x', width/4+600)
+// .attr("visibility","hidden")
 
 
-     
+// var currentStep = 0
 
-function step0() {
-  line.transition().attr("opacity", 0)
+// d3.select("body").on("keyup", function() {
+//   console.log(d3.event.code)
+//   if(d3.event.code === "Space" || d3.event.code === "ArrowRight") {
+//     currentStep = (currentStep + 1) % 3
+//     steps[currentStep].apply()
+//   }
+//   if(d3.event.code === "ArrowLeft") {
+//     currentStep = currentStep < 1 ? 3 : currentStep - 1
+//     steps[currentStep].apply()
+//   }
+// })
 
-  groups.transition()
-    .duration(1000)
-    .attr("transform", makeTranslate(width / 2, height / 2))
+// function makeTranslate(x, y) {
+//   return "translate(" + x + " " + y + ")"
+// }
+
+
+// function step0() {
+//   line.transition().attr("opacity", 0)
+
+//   groups.transition()
+//     .duration(1000)
+//     .attr("transform", makeTranslate(width / 2, height / 2))
    
-  circles.transition()
-    .duration(1000)
-    .attr("r",defaultRadius*3)
-    .style("fill-opacity", 1)
-    .style("fill", '#ffffff')
-    .style("stroke-width", 0)
+//   circles.transition()
+//     .duration(1000)
+//     .attr("r",defaultRadius*3)
+//     .style("fill-opacity", 1)
+//     .style("fill", '#ffffff')
+//     .style("stroke-width", 0)
     
 
-  text.transition()
-    .duration(1000)
-    .attr("opacity", 0)
+//   text.transition()
+//     .duration(1000)
+//     .attr("opacity", 0)
 
-  textZero.transition()
-    .duration(500)
-    .attr("text-anchor", "middle")
-    .attr("opacity", 1)
-    .attr("dx", 0)
-    .attr("dy", defaultRadius*3 + 40)
+//   textZero.transition()
+//     .duration(500)
+//     .attr("text-anchor", "middle")
+//     .attr("opacity", 1)
+//     .attr("dx", 0)
+//     .attr("dy", defaultRadius*3 + 40)
     
 
-labeltext.transition()
-.duration(1000)
-    .attr("opacity", 0)
-    .attr("dy", function(d) {
-      return sizeScale(d.songs) + 40
-    })
-    .attr("dx", 0)
-    .attr("text-anchor", "middle")
+// labeltext.transition()
+// .duration(1000)
+//     .attr("opacity", 0)
+//     .attr("dy", function(d) {
+//       return sizeScale(d.songs) + 40
+//     })
+//     .attr("dx", 0)
+//     .attr("text-anchor", "middle")
 
 
 
-}
+// }
 
-function step1() {
-  line.transition().attr("opacity", 2)
+// function step1() {
+//   line.transition().attr("opacity", 2)
 
 
-textZero.transition()
-    .duration(250)
-    .attr("text-anchor", "middle")
-    .attr("opacity", 0)
-    .attr("dx", 0)
-    .attr("dy", defaultRadius*3 + 40)
+// textZero.transition()
+//     .duration(250)
+//     .attr("text-anchor", "middle")
+//     .attr("opacity", 0)
+//     .attr("dx", 0)
+//     .attr("dy", defaultRadius*3 + 40)
    
 
-  groups.transition()
-    .duration(1000)
-    .attr("transform", function(d) {
-      return makeTranslate(xPositionScaleName(d.name), height / 2)
-    })
+//   groups.transition()
+//     .duration(1000)
+//     .attr("transform", function(d) {
+//       return makeTranslate(xPositionScaleName(d.name), height / 2)
+//     })
 
-  circles.transition()
-    .duration(1000)
-    .attr("r", defaultRadius*2)
-    .style("fill-opacity", 1)
-    .style("fill", '#ffffff')
-    .style("stroke-width", 0)
+//   circles.transition()
+//     .duration(1000)
+//     .attr("r", defaultRadius*2)
+//     .style("fill-opacity", 1)
+//     .style("fill", '#ffffff')
+//     .style("stroke-width", 0)
     
 
 
-  text.transition()
-    .duration(1000)
-    .attr("text-anchor", "middle")
-    .attr("opacity", 1)
-    .attr("dx", 0)
-    .attr("dy", defaultRadius*2 + 40)
+//   text.transition()
+//     .duration(1000)
+//     .attr("text-anchor", "middle")
+//     .attr("opacity", 1)
+//     .attr("dx", 0)
+//     .attr("dy", defaultRadius*2 + 40)
 
 
-imgsix
-.attr("visibility","show")
-imgseven
-.attr("visibility","show")
-imgeight
-.attr("visibility","show")
-imgnine
-.attr("visibility","show")
-imgten
-.attr("visibility","show")
-
- 
-
-}
+// imgsix
+// .attr("visibility","show")
+// imgseven
+// .attr("visibility","show")
+// imgeight
+// .attr("visibility","show")
+// imgnine
+// .attr("visibility","show")
+// imgten
+// .attr("visibility","show")
 
 
-function step2() {
-  line.transition().attr("opacity", 2)
+// }
 
-  groups.transition()
-    .duration(1000)
-    .attr("transform", function(d) {
-      return makeTranslate(xPositionScaleName(d.name), height / 2)
-    })
+// function step2() {
+//   line.transition().attr("opacity", 2)
 
-  circles.transition()
-    .duration(1000)
-    .attr("r", function(d) {
-      return sizeScale(d.songs)
-    })
-    .style("fill-opacity", 1)
-    .style("fill", '#ffffff')
-    .style("stroke-width", 0)
+//   groups.transition()
+//     .duration(1000)
+//     .attr("transform", function(d) {
+//       return makeTranslate(xPositionScaleName(d.name), height / 2)
+//     })
 
-  text.transition()
-    .duration(1000)
-    .attr("opacity", 0)
-    .attr("dy", function(d) {
-      return sizeScale(d.songs) + 40
-    })
-    .attr("dx", 0)
-    .attr("text-anchor", "middle")
+//   circles.transition()
+//     .duration(1000)
+//     .attr("r", function(d) {
+//       return sizeScale(d.songs)
+//     })
+//     .style("fill-opacity", 1)
+//     .style("fill", '#ffffff')
+//     .style("stroke-width", 0)
 
-
-labeltext.transition()
-.duration(1000)
-    .attr("opacity", 1)
-    .attr("dy", function(d) {
-      return sizeScale(d.songs) + 40
-    })
-    .attr("dx", 0)
-    .attr("text-anchor", "middle")
+//   text.transition()
+//     .duration(1000)
+//     .attr("opacity", 0)
+//     .attr("dy", function(d) {
+//       return sizeScale(d.songs) + 40
+//     })
+//     .attr("dx", 0)
+//     .attr("text-anchor", "middle")
 
 
-imgsix
-.attr("visibility","hidden")
-imgseven
-.attr("visibility","hidden")
-imgeight
-.attr("visibility","hidden")
-imgnine
-.attr("visibility","hidden")
-imgten
-.attr("visibility","hidden")
+// labeltext.transition()
+// .duration(1000)
+//     .attr("opacity", 1)
+//     .attr("dy", function(d) {
+//       return sizeScale(d.songs) + 40
+//     })
+//     .attr("dx", 0)
+//     .attr("text-anchor", "middle")
 
 
-}
+// imgsix
+// .attr("visibility","hidden")
+// imgseven
+// .attr("visibility","hidden")
+// imgeight
+// .attr("visibility","hidden")
+// imgnine
+// .attr("visibility","hidden")
+// imgten
+// .attr("visibility","hidden")
 
 
-
-
+// }
 
 
   
@@ -529,11 +845,6 @@ imgten
 
 </script>
  
-
-
-
-
-
     <br>
     <br>
     
