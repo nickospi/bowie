@@ -32,7 +32,7 @@
                     <h1 class="headline super-font">All published Bowie lyrics analyzed</h1>
                     <p class="body-text sub-font">
                         David Bowie is considered one of the most influential, long-lasting but also versatile contemporary music artists. With a career spanning almost six decades he managed to remain active, innovative and a leading, critically acclaimed artist by constantly reimagining himself and his music.
-                        This project aims to analyze all the officially published lyrics in Bowie's songbook and through text and sentiment analysis, to recognise patterns that could be correlated with the artist's personal timeline but also with major global events. 
+                        This project aims to analyze all the officially published lyrics in Bowie's songbook. Through text and sentiment analysis, I aim to recognise patterns that could be correlated with the artist's own life on planet Earth but also with major global events. 
                     </p>
                     <img class="image" src="style/images/db1.gif" alt="bowiegif" height=800>
                         <p class="caption sub-font">Positivity, negativity, fear, sadness, anger, anticipation, surprise, all lie in Bowie's songs. How have these sentiments changed through the years?</p>
@@ -41,9 +41,10 @@
           
             <div class="row justify-content-center">
                 <div class="col-lg-10 ">
-                    <p class="subhead super-font">Lyrics ranging from 1964 to 2016</p>
+                    <p class="subhead super-font">Lyrics ranging from 1964 to 2015</p>
                     <p class="body-text sub-font">
-                       Dataset collected using LyricWikia, an online wiki-based lyrics database providing access via API and a python library, as well as APIseeds' lyrics API. Data on published songbook obtained by scraping Allmusic and Wikipedia.                  </p>
+                      Use space bar and arrow keys to navigate through the below visualization. Dataset collected using LyricWikia, an online wiki-based lyrics database providing access via API and a python library, as well as APIseeds' lyrics API. Data on published songbook obtained by scraping Allmusic and Wikipedia.<a href="http://www.npwashere.com/bowie/songs"> Here</a> you can find all song lyrics used in this project. 
+                                        </p>
                       </p>
                 </div>
             </div>
@@ -52,18 +53,16 @@
       </div>
     </div>
     
-    <div class="row justify-content-center">
-      <div class="col-lg-10 ">
-          <p class="body-text sub-font"> [Use space bar and arrow keys to navigate through the below visualiation] </p>
-      </div>
-  </div>
-
    </p>
+
+
 </div>
 </div>
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.2/d3.min.js"></script>
 <script type="text/javascript">
 
+  
 
    
 
@@ -115,6 +114,11 @@ var svg = d3.select("body")
   .append("g")
   .attr("transform", "translate(100 100)")
  
+
+
+
+
+  
 var names = decades.map(function(d) { return d.name })
 var songNames = decades.map(function(d) { return +d.songs }),
     minPop = d3.min(songNames),
@@ -143,10 +147,17 @@ var line = svg.append("line")
   .attr("stroke", "white")
   .attr("opacity", 0)
 
+
+
+
+
 var groups = svg.selectAll("g")
   .data(decades)
   .enter().append("g")
   .attr("transform", "translate(" + (width / 2) + " " + (height / 2) + ")")
+  
+
+
 
 var text = groups.append("text")
   .text(function(d) {
@@ -154,7 +165,7 @@ var text = groups.append("text")
   })
   .attr("text-anchor", "middle")
   .attr("opacity", 0)
-  .attr("dy", defaultRadius + 20)
+  .attr("dy", defaultRadius + 40)
 
 var labeltext = groups.append("text")
   .text(function(d) {
@@ -162,7 +173,7 @@ var labeltext = groups.append("text")
   })
   .attr("text-anchor", "middle")
   .attr("opacity", 0)
-  .attr("dy", defaultRadius + 20)
+  .attr("dy", defaultRadius + 40)
 
 
 var textZero = groups.append("text")
@@ -171,15 +182,51 @@ var textZero = groups.append("text")
   })
   .attr("text-anchor", "middle")
   .attr("opacity", 1)
-  .attr("dy", defaultRadius + 20)
-  
-  
-  
-var circles = groups.append("circle")
-  .attr("r", defaultRadius)
-  .attr("fill", 'white')
-  
+  .attr("dy", defaultRadius*3 + 40)
 
+
+
+
+
+
+
+var circles = groups.append("circle")
+  .attr("r", defaultRadius*3)
+  .attr("fill", 'white')
+  .style("fill-opacity", 0)
+
+
+
+function circleTransition() { 
+
+
+var plsCircles = groups.append("circle")
+  .attr("r", defaultRadius*2)
+  .attr("fill", 'white')
+
+  repeat();
+
+function repeat() {
+  plsCircles
+    .transition()        
+    .duration(500)      
+    .attr("r", defaultRadius*2)
+    .attr("fill","white")
+
+
+    .transition()       
+    .duration(500)      
+    .attr("r", defaultRadius)
+    .attr("fill","white")
+    .on("end", repeat);  
+};
+
+};
+
+circleTransition();
+
+
+  
 var steps = [
   step0,
   step1,
@@ -189,6 +236,7 @@ var steps = [
   //step5,
   //step6
 ]
+
 
 var imgsix = svg.append("svg:image")
 .attr("xlink:href", "style/images/sixties.png")
@@ -227,7 +275,6 @@ var imgten = svg.append("svg:image")
 .attr("visibility","hidden")
 
 
-
 var currentStep = 0
 
 d3.select("body").on("keyup", function() {
@@ -246,20 +293,23 @@ function makeTranslate(x, y) {
   return "translate(" + x + " " + y + ")"
 }
 
+
+     
+
 function step0() {
   line.transition().attr("opacity", 0)
 
   groups.transition()
     .duration(1000)
     .attr("transform", makeTranslate(width / 2, height / 2))
-
+   
   circles.transition()
     .duration(1000)
-    .attr("r",defaultRadius)
+    .attr("r",defaultRadius*3)
     .style("fill-opacity", 1)
     .style("fill", '#ffffff')
     .style("stroke-width", 0)
-
+    
 
   text.transition()
     .duration(1000)
@@ -270,14 +320,14 @@ function step0() {
     .attr("text-anchor", "middle")
     .attr("opacity", 1)
     .attr("dx", 0)
-    .attr("dy", defaultRadius + 20)
+    .attr("dy", defaultRadius*3 + 40)
     
 
 labeltext.transition()
 .duration(1000)
     .attr("opacity", 0)
     .attr("dy", function(d) {
-      return sizeScale(d.songs) + 20
+      return sizeScale(d.songs) + 40
     })
     .attr("dx", 0)
     .attr("text-anchor", "middle")
@@ -295,10 +345,8 @@ textZero.transition()
     .attr("text-anchor", "middle")
     .attr("opacity", 0)
     .attr("dx", 0)
-    .attr("dy", defaultRadius + 20)
+    .attr("dy", defaultRadius*3 + 40)
    
-
-
 
   groups.transition()
     .duration(1000)
@@ -308,17 +356,19 @@ textZero.transition()
 
   circles.transition()
     .duration(1000)
-    .attr("r", defaultRadius)
+    .attr("r", defaultRadius*2)
     .style("fill-opacity", 1)
     .style("fill", '#ffffff')
     .style("stroke-width", 0)
+    
+
 
   text.transition()
     .duration(1000)
     .attr("text-anchor", "middle")
     .attr("opacity", 1)
     .attr("dx", 0)
-    .attr("dy", defaultRadius + 20)
+    .attr("dy", defaultRadius*2 + 40)
 
 
 imgsix
@@ -332,7 +382,7 @@ imgnine
 imgten
 .attr("visibility","show")
 
-
+ 
 
 }
 
@@ -359,7 +409,7 @@ function step2() {
     .duration(1000)
     .attr("opacity", 0)
     .attr("dy", function(d) {
-      return sizeScale(d.songs) + 20
+      return sizeScale(d.songs) + 40
     })
     .attr("dx", 0)
     .attr("text-anchor", "middle")
@@ -369,7 +419,7 @@ labeltext.transition()
 .duration(1000)
     .attr("opacity", 1)
     .attr("dy", function(d) {
-      return sizeScale(d.songs) + 20
+      return sizeScale(d.songs) + 40
     })
     .attr("dx", 0)
     .attr("text-anchor", "middle")
@@ -478,10 +528,8 @@ imgten
 
 
 </script>
- <p class="note sub-font">
-  <a href="http://www.npwashere.com/bowie/songs"> Here</a> are all song lyrics used in this project. 
+ 
 
-</p>
 
 
 
