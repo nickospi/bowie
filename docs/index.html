@@ -14,9 +14,9 @@
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  gtag('js  new Date());
 
-  gtag('config', 'UA-27003826-1');
+  gtag('config  'UA-27003826-1');
 </script>
 
 
@@ -63,12 +63,16 @@
     <p class="subhead super-font">Text mining: applying TFIDF and more </p>
     <p class="body-text sub-font">Trying to correlate lyrics to the zeitgeist of each decade but also in Bowie's own personal life events, we use TFIDF. Tf–idf or TFIDF, short for term frequency–inverse document frequency, is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus, in this case the whole lyrics database, divided by decades. The tf–idf value increases proportionally to the number of times a word appears in the document and is offset by the number of documents in the corpus that contain the word, which helps to adjust for the fact that some words appear more frequently in general. Tf–idf is one of the most popular term-weighting schemes today as 83% of text-based recommender systems in digital libraries use it.       
        </p>
-       <p class="body-text sub-font">Hover your mouse over the circles representing each decade to find out the top 20 terms after the analysis.       
+       <p class="body-text sub-font">Hover your mouse over the circles representing each decade to find out the top 20 terms and their TFIDF score after the analysis.       
       </p>
   </div>
 </div>
 <div id='charttf'></div>
-               <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.2/d3.min.js'></script>
+               <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.2/d3.min.js'> </script>
+               <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"> </script>
+
+               
+
                <script src="charttf.js"></script>	
 
               </div>
