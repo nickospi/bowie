@@ -11,7 +11,7 @@
       {
         name: '70s',
         songs: 89,
-        tfidf: '<br> come 2.88 <br> could 2.49 <br> time 2.12 <br> never 2.11 <br> back 1.77 <br> take 1.73 <br>stay 1.73 <br> baby 1.70 <br>someone 1.68 <br> want 1.64 <br> face  1.53<br> rock  1.50 <br>cause 1.47<br> life  1.46<br> waiting 1.44 <br> look 1.37 <br> yeah 1.35 <br> young 1.34 <br> away <br> roll 1.29<br>'
+        tfidf: '<br> come 2.88 <br> could 2.49 <br> time 2.12 <br> never 2.11 <br> back 1.77 <br> take 1.73 <br>stay 1.73 <br> baby 1.70 <br>someone 1.68 <br> want 1.64 <br> face  1.53<br> rock  1.50 <br>cause 1.47<br> life  1.46<br> waiting 1.44 <br> look 1.37 <br> yeah 1.35 <br> young 1.34 <br> away 1.31<br> roll 1.29<br>'
        
 
 
@@ -63,13 +63,45 @@ padding = 100;
       return "<strong>Top Terms:</strong> <span style='color:red'>" + d.name + "</span>"+"<p>"+d.tfidf+"</p>";
     })   
 
-var svg = d3.select("body")
-.append("svg")
-.attr("height", height + padding * 2)
-.attr("width", width + padding * 2)
-.append("g")
-.attr("transform", "translate(100 100)")
-
+ 
+    var svg = d3.select("body")
+    .append("svg")
+    .attr("height", height + padding * 2)
+    .attr("width", width + padding * 2)
+    .append("g")
+    .attr("transform", "translate(100 100)")
+    var imgsix = svg.append("svg:image")
+    .attr("xlink:href", "style/images/sixties.png")
+    .attr("width", "80")
+    .attr("height", "80")
+    .attr('x',  width/4-200)
+    
+    var imgseven = svg.append("svg:image")
+    .attr("xlink:href", "style/images/seventies.png")
+    .attr("width", "80")
+    .attr("height", "80")
+    .attr('x', width/4)
+    
+    var imgeight = svg.append("svg:image")
+    .attr("xlink:href", "style/images/eighties.png")
+    .attr("width", "80")
+    .attr("height", "80")
+    .attr('x', width/4+200)
+    
+    var imgnine = svg.append("svg:image")
+    .attr("xlink:href", "style/images/nineties.png")
+    .attr("width", "80")
+    .attr("height", "80")
+    .attr('x', width/4+400)
+    
+    var imgten = svg.append("svg:image")
+    .attr("xlink:href", "style/images/zeroes.png")
+    .attr("width", "80")
+    .attr("height", "80")
+    .attr('x', width/4+600)
+    
+    
+  
 svg.call(tip);
 
 
@@ -81,10 +113,6 @@ maxPop = d3.max(songNames);
 var maxSongs = 295
 
 var xPositionScaleName = d3.scalePoint().domain(names).range([0, width])
-var colorScale = d3.scaleLinear().domain([minPop, maxPop]).range(['#ffffff','#e7298a'])
-var colorScaleName = d3.scaleOrdinal().domain(names).range(['#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854'])
-
-
 var defaultRadius = 20;
 var maxRadius = 100;
 var sizeScale = d3.scaleSqrt().domain([0, maxPop]).range([0, maxRadius])
@@ -98,28 +126,20 @@ var line = svg.append("line")
 .attr("y1", height / 2)
 .attr("y2", height / 2)
 .attr("stroke", "white")
-.attr("opacity", 0)
-
+.attr("opacity", 2)
 
 var groups = svg.selectAll("g")
 .data(decades)
 .enter().append("g")
 .attr("transform", "translate(" + (width / 2) + " " + (height / 2) + ")")
 
-
-   
-
-
-
-var labeltext = groups.append("text")
+var text = groups.append("text")
 .text(function(d) {
-return d.songs+" song lyrics"
+  return d.name
 })
 .attr("text-anchor", "middle")
-.attr("opacity", 0)
-.attr("dy", defaultRadius + 40)
-
-
+.attr("opacity", 1)
+.attr("dy", defaultRadius*2 + 40)
 
 
 
@@ -127,40 +147,41 @@ var circles = groups.append("circle")
 .attr("r", defaultRadius*3)
 .attr("fill", 'white')
 .style("fill-opacity", 0)
+.on('mouseover', tip.show)
+.on('mouseout', tip.hide)
 
 
 
- function makeTranslate(x, y) {
-   return "translate(" + x + " " + y + ")"
- }
+function makeTranslate(x, y) {
+return "translate(" + x + " " + y + ")"
+}
+
+  
+ 
+groups.transition()
+  .duration(1000)
+  .attr("transform", function(d) {
+    return makeTranslate(xPositionScaleName(d.name), height / 2)
+  })
 
 
-
-line.attr("opacity", 2)
-
-groups.attr("transform", function(d) {
-return makeTranslate(xPositionScaleName(d.name), height / 2)
- })
-
-circles.attr("r", function(d) {
-return sizeScale(d.songs)
- })
- .style("fill-opacity", 1)
- .style("fill", '#ffffff')
- .style("stroke-width", 0)
- .on('mouseover', tip.show)
- .on('mouseout', tip.hide)
-
-labeltext
- .attr("opacity", 1)
- .attr("dy", function(d) {
-   return sizeScale(d.songs) + 40
- })
- .attr("dx", 0)
- .attr("text-anchor", "middle")
+circles.transition()
+  .duration(1000)
+  .attr("r", defaultRadius*2)
+  .style("fill-opacity", 1)
+  .style("fill", '#ffffff')
+  .style("stroke-width", 0)
+  .style("stroke-width", 0)
+  .on('mouseover', tip.show)
+  .on('mouseout', tip.hide)
 
 
 }())
 
 
 ;
+
+
+
+ 
+ 

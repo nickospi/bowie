@@ -96,7 +96,7 @@ var labeltext = groups.append("text")
 
 var textZero = groups.append("text")
   .text(function(d) {
-    return maxSongs+ " song lyrics written by Bowie and dating from  1964 up to 2015 have been analyzed.[Click ot Tap]"
+    return maxSongs+ " song lyrics written by Bowie and dating from  1964 up to 2015 have been analyzed.[Click or Tap]"
   })
   .attr("text-anchor", "middle")
   .attr("opacity", 1)
