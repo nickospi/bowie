@@ -5,7 +5,11 @@ body {
     margin: auto;
     text-align: center;
 }
-
+chart {
+    position: absolute;
+    top: 50px;
+    left: 100px;
+  }	
 
 .dark-theme {
     background-color: #282828;

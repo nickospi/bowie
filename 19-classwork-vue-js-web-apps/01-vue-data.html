@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+    
+    <!-- Leaflet stuff -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+
+    <style>
+      img {
+        max-width: 100%;
+      }
+      .search-filter {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        position: relative;
+      }
+      .search-filter input {
+        width: 100%;
+      }
+      .search-filter ul {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        padding-left: 0;
+      }
+      .search-filter li {
+        border: solid 1px #666;
+        list-style-type: none;
+        padding: 10px;
+      }
+      .search-filter li:hover {
+        cursor: pointer;
+        background: #e4f2ff;
+      }
+      .search-filter ul {
+        background: rgba(255,255,255,0.95);
+        z-index: 100;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.3.7/papaparse.min.js"></script>
+
+    <div id="app">
+
+      <!-- begin navbar -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">School Searcher</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#">About this project</a></li>
+          </ul>
+        </div>
+      </nav>
+      <!-- end navbar -->
+
+      <div class="container">
+        <!-- search filter -->
+        <div class="row">
+          <div class="column col-sm-12">   
+            <p>There are {{ schoolCount }} schools in New York. You are searching for {{ search }}</p>         
+            <div class="search-filter">
+              <input v-model="search" placeholder="Search for a school">
+              <ul v-if="search.length > 0">
+                <li v-on:click="selectSchool(school)" v-for="school in searchResults">{{ school.SCHOOLNAME }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- end search filter -->
+
+        <!-- looking at a single school's info -->
+        <div v-if="school">
+          <div class="row">
+            <div class="column col-sm-7">
+                <h2>{{ school.SCHOOLNAME }}</h2>
+                <hr>
+                <p><strong>Borough code:</strong> {{ school.BORO }}</p>
+                <p><strong>Address:</strong> {{ school.ADDRESS }}</p>
+                <p><strong>Type:</strong> {{ school.SCH_TYPE }}</p>
+            </div>
+            <div class="column col-sm-5">
+              <img v-bind:src="schoolMapSrc">
+              <p>This is where a school's map will go</p>
+              <p>We're using the google maps IMAGE api, which gives us images instead of crazy interactive maps. It's easier to use with Vue.</p>
+              <p>Hey!!! When you build an app, don't re-use mine, get your own static map API key <a href="https://developers.google.com/maps/documentation/static-maps/">here</a>.</p>              
+            </div>
+          </div>
+        </div>
+        <!-- end single school -->
+
+      </div>
+    </div>
+
+    <!-- This is where we code up our application -->
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: {
+          schools: [],
+          search: "",
+          school: null
+        },
+        computed: {
+          schoolCount: function () {
+            return this.searchResults.length
+          },
+          searchResults: function () {
+            return this.schools.filter(function(school) {
+              searchTerm = app.search.toLowerCase()
+              schoolName = school.SCHOOLNAME.toLowerCase()
+              return schoolName.indexOf(searchTerm) !== -1
+            })
+          },
+          schoolMapSrc: function () {
+            var apikey = "AIzaSyC6Xu4GUeKWFYXLm9GRBAnGkbVClo9HD_o"
+            var coords = this.school.latitude + "," + this.school.longitude
+            return "https://maps.googleapis.com/maps/api/staticmap?center=" + coords + "&zoom=13&scale=1&size=400x300&maptype=roadmap&key=" + apikey + "&format=png&visual_refresh=true&markers=label:|" + coords
+          }
+        },
+        methods: {
+          selectSchool: function (school) {
+            app.school = school
+            app.search = ""
+          }
+        },
+        created: function () {
+          Papa.parse("schools-geocoded.csv", {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            complete: function(parsed) {
+              // Take our CSV data and save it into
+              // our application's "schools" data
+              app.schools = parsed.data
+              console.log("Do something here")
+            }
+          })
+        }
+      })
+    </script>
+  </body>
+</html>
+
+
+
