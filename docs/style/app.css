@@ -4,6 +4,8 @@ body {
     padding-top:60px;
     margin: auto;
     text-align: center;
+    font-family: 'Roboto Condensed', sans-serif;
+
 }
 chart {
     position: absolute;
