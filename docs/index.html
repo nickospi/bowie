@@ -84,7 +84,12 @@
             <div class="row justify-content-center"> 
                 <div class="col-md-10">
                     <p class="subhead super-font"> Planet Earth is blue and there's nothing I can do </p>
-                    <p class="body-text sub-font">Sentiment analysis was also applied to the lyrics which are now grouped by album. All officially Bowie published albums are put chronologically. What was the main sentiment in each one of Bowie's albums? Which are the happiest and which the saddest of his carreer? </p>
+                    <p class="body-text sub-font">Sentiment analysis was also applied to the lyrics which are now grouped by album. All officially Bowie published albums are put chronologically. What was the main sentiment in each one of Bowie's albums? Which are the happiest and which the saddest of his carreer? </p> 
+                    <p> With the use of Python Pandas and TextBlob library we can analyse the lyrics in a Natural Language Processing (NLP) way. The sentiment property used below, returns a namedtuple of the form Sentiment(polarity, subjectivity). The polarity score is a float within the range [-1.0, 1.0] whereas the subjectivity is a float within the range [0.0, 1.0] where 0.0 is very objective and 1.0 is very subjective.
+                      Therefore, we end up with the below ranking for each album with the negativity being scored below zero and the positivity above zero. 
+                    </p>
+                    <p>Quite unsurprisingly, David Bowie's swansong album (★ or Blackstar) was filled with negative sentiments, whereas his early 70s and 80s eras have been the most upbeat ones. </p>
+                    <br>
                     <img class="image" src="style/images/9.png" alt="with_names">
                    
                 </div>
