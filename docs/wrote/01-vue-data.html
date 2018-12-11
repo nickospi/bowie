@@ -50,31 +50,23 @@
 
     <div id="app">
 
-      <!-- begin navbar -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">School Searcher</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"><a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a></li>
-            <li class="nav-item"><a class="nav-link" href="#">About this project</a></li>
-          </ul>
-        </div>
-      </nav>
-      <!-- end navbar -->
+     
 
       <div class="container">
         <!-- search filter -->
         <div class="row">
-          <div class="column col-sm-12">   
-            <p>There are {{ schoolCount }} schools in New York. You are searching for {{ search }}</p>         
+          <div class="column col-sm-12">  
+            <h2>Did Bowie write a song about <img src="style/images/did.gif" alt=""></h2> 
+           
             <div class="search-filter">
-              <input v-model="search" placeholder="Search for a school">
+              <input v-model="search" placeholder="Search for any term">
+              <br>
+              <br>
+              
+              <!-- <p>If speaking literally, there are {{ schoolCount }} Bowie songs about {{ search }}</p> -->
+
               <ul v-if="search.length > 0">
-                <li v-on:click="selectSchool(school)" v-for="school in searchResults">{{ school.SCHOOLNAME }}</li>
+                <li v-on:click="selectSchool(school)" v-for="school in searchResults">{{ school.TITLE }}</li>
               </ul>
             </div>
           </div>
@@ -85,11 +77,12 @@
         <div v-if="school">
           <div class="row">
             <div class="column col-sm-7">
-                <h2>{{ school.SCHOOLNAME }}</h2>
+                <h2>{{ school.TITLE }}</h2>
                 <hr>
-                <p><strong>Borough code:</strong> {{ school.BORO }}</p>
-                <p><strong>Address:</strong> {{ school.ADDRESS }}</p>
-                <p><strong>Type:</strong> {{ school.SCH_TYPE }}</p>
+                <p><strong>Year:</strong> {{ school.YEAR }}</p>
+                <p><strong>Album:</strong> {{ school.ALBUM }}</p>
+                <p><strong>Lyrics:</strong> {{ school.TEXT }}</p>
+
             </div>
             <div class="column col-sm-5">
               <img v-bind:src="schoolMapSrc">
@@ -120,24 +113,26 @@
           searchResults: function () {
             return this.schools.filter(function(school) {
               searchTerm = app.search.toLowerCase()
-              schoolName = school.SCHOOLNAME.toLowerCase()
+              schoolName = school.TEXT.toLowerCase()
               return schoolName.indexOf(searchTerm) !== -1
             })
           },
-          schoolMapSrc: function () {
-            var apikey = "AIzaSyC6Xu4GUeKWFYXLm9GRBAnGkbVClo9HD_o"
-            var coords = this.school.latitude + "," + this.school.longitude
-            return "https://maps.googleapis.com/maps/api/staticmap?center=" + coords + "&zoom=13&scale=1&size=400x300&maptype=roadmap&key=" + apikey + "&format=png&visual_refresh=true&markers=label:|" + coords
-          }
+   
         },
         methods: {
           selectSchool: function (school) {
             app.school = school
             app.search = ""
+          },
+          translatedBoro: function (code) {
+            if (code === 'X') {
+              return "Bronx"
+            }
+            return code
           }
         },
         created: function () {
-          Papa.parse("schools-geocoded.csv", {
+          Papa.parse("bowiefinal.csv", {
             download: true,
             header: true,
             skipEmptyLines: true,
@@ -153,6 +148,3 @@
     </script>
   </body>
 </html>
-
-
-
